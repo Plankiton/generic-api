@@ -1,0 +1,21 @@
+version: "3.1"
+
+services:
+  api:
+    restart: always
+    environment:
+      - "PORT=8000"
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    image: generic-api:dev
+    working_dir: /bin
+    tty: true
+    security_opt:
+      - seccomp:unconfined
+    volumes:
+      - ./:/generic-api
+    command: |
+      [[ -e air ]] || curl -sSfL https://raw.githubusercontent.com/cosmtrek/air/master/install.sh | sh -s -- -b $(go env GOPATH)/bin && air
